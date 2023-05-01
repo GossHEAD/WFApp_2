@@ -156,19 +156,21 @@ namespace WinFormsApp2
             try
             {
                 string sqlexp = $@"DELETE FROM Product WHERE ID = {id}";
+                string sqlexp1 = "UPDATE sqlite_sequence SET seq=0 WHERE name = 'Product'";
                 using (var connection = new SQLiteConnection(@"Data Source = product.db"))
                 {
                     connection.Open();
                     var cmd = new SQLiteCommand(sqlexp, connection);
+                    var cmd1 = new SQLiteCommand(sqlexp1, connection);
                     cmd.ExecuteNonQuery();
-
+                    cmd1.ExecuteNonQuery();
                     cmd.CommandText = "SELECT * from Product";
                     using (var reader = cmd.ExecuteReader())
                     {
-                        List<Product> users = new List<Product>();
+                        List<Product> products = new List<Product>();
                         while (reader.Read())
                         {
-                            users.Add(new Product
+                            products.Add(new Product
                             {
                                 ProductId = reader.GetInt32(0),
                                 Name = reader.GetString(1),
@@ -176,7 +178,7 @@ namespace WinFormsApp2
                                 Category = reader.GetString(3),
                             });
                         }
-                        return users;
+                        return products;
                     }
 
                 }
@@ -219,21 +221,20 @@ namespace WinFormsApp2
             {
                 string sqlexp1 = "UPDATE sqlite_sequence SET seq=0 WHERE name = 'Product'";
 
-                string sqlexp = @"insert into Product(
-                        Name,
-                        Count, Category)
-                        values(@name, @count, @category)";
+                string sqlexp = @"insert into Product(Name, Count, Category) values(@Name, @Count, @Category)";
                 using (var connection = new SQLiteConnection(@"Data Source = product.db"))
                 {
                     connection.Open();
                     var cm1 = new SQLiteCommand(sqlexp1, connection);
                     var cmd = new SQLiteCommand(sqlexp, connection);
 
-                    SQLiteParameter Name = new SQLiteParameter("@name", name);
+                    //SQLiteParameter ID = new SQLiteParameter("@ID", id);
+                    //cmd.Parameters.Add(ID);
+                    SQLiteParameter Name = new SQLiteParameter("@Name", name);
                     cmd.Parameters.Add(Name);
-                    SQLiteParameter Count = new SQLiteParameter("@count", count);
+                    SQLiteParameter Count = new SQLiteParameter("@Count", count);
                     cmd.Parameters.Add(Count);
-                    SQLiteParameter Category = new SQLiteParameter("@сategory", category);
+                    SQLiteParameter Category = new SQLiteParameter("@Category", category);
                     cmd.Parameters.Add(Category);
                     cm1.ExecuteNonQuery();
                     cmd.ExecuteNonQuery();

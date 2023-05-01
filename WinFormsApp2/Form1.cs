@@ -221,8 +221,8 @@ public partial class Form1 : Form
                 string[,] dataFromTheFile = new string[dataFromFile.Length, dataGridViewProducts.ColumnCount];
                 for (int i = 0; i < dataFromFile.Length; i++)
                 {
-                    string[] coordinateStr = dataFromFile[i].Split(new char[] { ' ' });
-                    for (int j = 0; j < dataGridViewProducts.ColumnCount; j++)
+                    string[] coordinateStr = dataFromFile[i].Split( ' ');
+                    for (int j = 0; j < 3; j++)
                     {
                         dataFromTheFile[i, j] = coordinateStr[j];
                     }
@@ -230,7 +230,8 @@ public partial class Form1 : Form
                                                     Convert.ToInt32(dataFromTheFile[i, 1]),
                                                     dataFromTheFile[i, 2]);
 
-                }
+            
+               }
             //}
         }
         if (list != null && list.Count > 0)
