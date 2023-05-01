@@ -7,14 +7,14 @@ using System.Data.SQLite;
 using System.Security.Cryptography.X509Certificates;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
-using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.Data.Sqlite;
+//using Microsoft.VisualBasic.ApplicationServices;
+//using Microsoft.Data.Sqlite;
 
 namespace WinFormsApp2
 {
     public class SqlQuery
     {
-        internal static List<Product> ConnectionToSQLAndShowUsers()
+        internal static List<Product> ConnectionToSQLAndShowProducts()
         {
             try
             {
@@ -99,15 +99,11 @@ namespace WinFormsApp2
             }
             return null;
         }
-        internal static List<Product> UpdateAndShowUsers(int id, string name, int count, string category)
+        internal static List<Product> UpdateAndShowProducts(int id, string name, int count, string category)
         {
             try
             {
-                string sqlexp = $@"UPDATE Product
-                                set Name = @name,
-	                            Count = @count,
-	                            Category = @category,	                    
-                                where ID = @id";
+                string sqlexp = $@"UPDATE Product set Name = @name, Count = @count, Category = @category where ID = @id;";
                 using (var connection = new SQLiteConnection(@"Data Source = product.db"))
                 {
                     connection.Open();
@@ -120,7 +116,7 @@ namespace WinFormsApp2
                     cmd.Parameters.Add(Count);
                     SQLiteParameter Category = new SQLiteParameter("@category", category);
                     cmd.Parameters.Add(Category);
-                    SQLiteParameter ProductId = new SQLiteParameter("@id", id);
+                    SQLiteParameter ProductId = new SQLiteParameter("@ID", id);
                     cmd.Parameters.Add(ProductId);
                     cmd.ExecuteNonQuery();
 
@@ -151,7 +147,7 @@ namespace WinFormsApp2
             }
             return null;
         }
-        internal static List<Product> DeleteAndShowUsers(int id)
+        internal static List<Product> DeleteAndShowProducts(int id)
         {
             try
             {
@@ -215,7 +211,7 @@ namespace WinFormsApp2
             }
             return null;
         }
-        internal static List<Product> TakeFromFileAndShowUsers(string name, int count, string category)
+        internal static List<Product> TakeFromFileAndShowProducts(string name, int count, string category)
         {
             try
             {

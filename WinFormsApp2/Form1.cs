@@ -18,7 +18,7 @@ public partial class Form1 : Form
         InitializeComponent();
         _list = new List<Product>();
         productBindingSource3.DataSource = _list;
-        List<Product> list = ConnectionToSQLAndShowUsers();
+        List<Product> list = ConnectionToSQLAndShowProducts();
         if (list != null && list.Count > 0)
         {
             _list.AddRange(list);
@@ -29,7 +29,7 @@ public partial class Form1 : Form
     private void button1_Click(object sender, EventArgs e)
     {
         _list.Clear();
-        List<Product> list = ConnectionToSQLAndShowUsers();
+        List<Product> list = ConnectionToSQLAndShowProducts();
         if (list != null && list.Count > 0)
         {
             _list.AddRange(list);
@@ -74,7 +74,7 @@ public partial class Form1 : Form
                                MessageBoxOptions.DefaultDesktopOnly);
         if (result == DialogResult.Yes)
         {
-            List<Product> list = DeleteAndShowUsers(index);
+            List<Product> list = DeleteAndShowProducts(index);
             if (list != null && list.Count > 0)
             {
                 _list.AddRange(list);
@@ -83,7 +83,7 @@ public partial class Form1 : Form
         }
         else
         {
-            List<Product> list = ConnectionToSQLAndShowUsers();
+            List<Product> list = ConnectionToSQLAndShowProducts();
             if (list != null && list.Count > 0)
             {
                 _list.AddRange(list);
@@ -118,7 +118,7 @@ public partial class Form1 : Form
             if (e.KeyCode == Keys.Enter)
             {
                 _list.Clear();
-                List<Product> list = UpdateAndShowUsers(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
+                List<Product> list = UpdateAndShowProducts(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
                                                      textBoxCategory.Text);
                 if (list != null && list.Count > 0)
                 {
@@ -142,7 +142,7 @@ public partial class Form1 : Form
             if (e.KeyCode == Keys.Enter)
             {
                 _list.Clear();
-                List<Product> list = UpdateAndShowUsers(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
+                List<Product> list = UpdateAndShowProducts(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
                                                      textBoxCategory.Text);
                 if (list != null && list.Count > 0)
                 {
@@ -166,7 +166,7 @@ public partial class Form1 : Form
             if (e.KeyCode == Keys.Enter)
             {
                 _list.Clear();
-                List<Product> list = UpdateAndShowUsers(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
+                List<Product> list = UpdateAndShowProducts(index, textBoxName.Text, Convert.ToInt32(textBoxCount.Text),
                                                      textBoxCategory.Text);
                 if (list != null && list.Count > 0)
                 {
@@ -183,23 +183,29 @@ public partial class Form1 : Form
 
     private void toolStripButton1_Click(object sender, EventArgs e)
     {
-
-        if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
-            return;
-        string filename = saveFileDialog1.FileName;
-        using (StreamWriter writer = new StreamWriter(filename, false))
+        try
         {
-
-            for (int i = 0; i < dataGridViewProducts.RowCount; i++)
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            string filename = saveFileDialog1.FileName;
+            using (StreamWriter writer = new StreamWriter(filename, false))
             {
-                for (int j = 1; j < dataGridViewProducts.ColumnCount; j++)
+
+                for (int i = 0; i < dataGridViewProducts.RowCount; i++)
                 {
-                    string text = dataGridViewProducts.Rows[i].Cells[j].Value.ToString();
-                    writer.Write(text);
-                    writer.Write(" ");
+                    for (int j = 1; j < dataGridViewProducts.ColumnCount; j++)
+                    {
+                        string text = dataGridViewProducts.Rows[i].Cells[j].Value.ToString();
+                        writer.Write(text);
+                        writer.Write(" ");
+                    }
+                    writer.Write('\n');
                 }
-                writer.Write('\n');
             }
+        }
+        catch (Exception)
+        {
+            MessageBox.Show("Вы ввели неправильный путь до файла!");
         }
     }
 
@@ -226,7 +232,7 @@ public partial class Form1 : Form
                     {
                         dataFromTheFile[i, j] = coordinateStr[j];
                     }
-                    list = TakeFromFileAndShowUsers(dataFromTheFile[i, 0],
+                    list = TakeFromFileAndShowProducts(dataFromTheFile[i, 0],
                                                     Convert.ToInt32(dataFromTheFile[i, 1]),
                                                     dataFromTheFile[i, 2]);
 

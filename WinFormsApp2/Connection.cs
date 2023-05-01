@@ -11,7 +11,7 @@ namespace WinFormsApp2;
 
 public class Connection
 {
-    internal static List<Product> ConnectionToSQLAndShowUsers()
+    internal static List<Product> ConnectionToSQLAndShowProducts()
     {
         try
         {
